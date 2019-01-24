@@ -4,6 +4,9 @@ import javax.persistence.*;
 
 @Entity
 public class Book {
+    public long getId() {
+        return id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
