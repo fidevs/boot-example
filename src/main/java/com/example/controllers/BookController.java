@@ -1,6 +1,8 @@
 package com.example.controllers;
 
 import com.example.domain.Book;
+import com.example.exceptions.BookIdMismatchException;
+import com.example.exceptions.BookNotFoundException;
 import com.example.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

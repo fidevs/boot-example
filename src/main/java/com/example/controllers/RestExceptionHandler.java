@@ -1,5 +1,7 @@
 package com.example.controllers;
 
+import com.example.exceptions.BookIdMismatchException;
+import com.example.exceptions.BookNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(
             Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getLocalizedMessage(),
-                new HttpHeaders(), HttpStatus.BAD_REQUEST, request)
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }
