@@ -96,11 +96,25 @@ public class LiveTest {
                 .put(location);
 
         assertEquals(HttpStatus.OK.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
-        
+
         response = (Response) RestAssured.get(location);
 
         assertEquals(HttpStatus.OK.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
         assertEquals("newAuthor", ((com.jayway.restassured.response.Response) response).jsonPath()
         .get("author"));
+    }
+
+    @Test
+    public void whenDeleteCreatedBook_thenOk() {
+        Book book = createRandomBook();
+        String location = createBookAsUri(book);
+        Response response = (Response) RestAssured.delete(location);
+
+        assertEquals(HttpStatus.OK.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
+
+        response = (Response) RestAssured.get(location);
+
+        response = (Response) RestAssured.get(location);
+        assertEquals(HttpStatus.NOT_FOUND.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
     }
 }
