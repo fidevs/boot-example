@@ -62,4 +62,45 @@ public class LiveTest {
 
         assertEquals(HttpStatus.NOT_FOUND.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
     }
+
+    @Test
+    public void whenCreateNewBook_thenCreated() {
+        Book book = createRandomBook();
+        Response response = (Response) RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(book)
+                .post(API_ROOT);
+        assertEquals(HttpStatus.CREATED.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
+    }
+
+    @Test
+    public void whenInvalidBook_thenError() {
+        Book book = createRandomBook();
+        book.setAuthor(null);
+        Response response = (Response) RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(book)
+                .post(API_ROOT);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
+    }
+
+    @Test
+    public void whenUpdateCreatedBook_thenUpdated() {
+        Book book = createRandomBook();
+        String location = createBookAsUri(book);
+        book.setId(Long.parseLong(location.split("api/books/")[1]));
+        book.setAuthor("newAuthor");
+        Response response = (Response) RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(book)
+                .put(location);
+
+        assertEquals(HttpStatus.OK.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
+        
+        response = (Response) RestAssured.get(location);
+
+        assertEquals(HttpStatus.OK.value(), ((com.jayway.restassured.response.Response) response).getStatusCode());
+        assertEquals("newAuthor", ((com.jayway.restassured.response.Response) response).jsonPath()
+        .get("author"));
+    }
 }
